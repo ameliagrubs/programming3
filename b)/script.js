@@ -63,56 +63,20 @@ function matrixGenerator(matrixSize, grass,grassEater,predator, omnivorous, rest
 
         return matrix
 }
-let matrix = matrixGenerator(30,17,7,4,2,6,8,10)
+var socket = io()
+
+
 let side = 30
-///օբյեկտներ պահելու զանգվածներ
-var grassArr = []
-var grassEaterArr = []
-var predatorArr = []
-var omnivorousArr = []
-var restarterArr = []
-var hunterArr = []
-var seniorHunterArr = []
+
 
 
 function setup() {
-        frameRate(15)
-        createCanvas(matrix[0].length * side, matrix.length * side)
-        for (let y = 0; y < matrix.length; y++) {
-                for (let x = 0; x < matrix[y].length; x++) {
-                        if (matrix[y][x] == 1) {
-                                let grass = new Grass(x, y)
-
-                                grassArr.push(grass)
-
-
-                        }else if(matrix[y][x] == 2){
-                             let grEat = new  GrassEater(x,y)
-                             grassEaterArr.push(grEat)
-                        }else if(matrix[y][x] ==  3){
-                             let pre = new Predator(x,y)
-                             predatorArr.push(pre)
-                        }else if(matrix[y][x] == 4){
-                                let omn = new Omnivorous(x,y)
-                                omnivorousArr.push(omn)
-                        }else if (matrix[y][x] == 5) {
-                                var re = new restarter(x, y)
-                                restarterArr.push(re)
-                        }else if (matrix[y][x] == 6) {
-                                var hun = new Hunter(x, y)
-                                hunterArr.push(hun)
-                        }else if (matrix[y][x] == 7){
-                                var sen = new SeniorHunter(x,y)
-                                seniorHunterArr.push(sen)
-                        }
-
-                }
-        }
-
+        createCanvas(30 * side, 10 * side)
+       
 }
 
 
-function draw() {
+function nkarel(matrix) {
         for (let y = 0; y < matrix.length; y++) {
                 for (let x = 0; x < matrix[y].length; x++) {
 
@@ -147,37 +111,42 @@ function draw() {
 
 
 
-                for (let i in grassArr) {
-                        grassArr[i].mul()
-                }
+                // for (let i in grassArr) {
+                //         grassArr[i].mul()
+                // }
 
 
-                for(let i in grassEaterArr){
-                        grassEaterArr[i].eat()
-                }
+                // for(let i in grassEaterArr){
+                //         grassEaterArr[i].eat()
+                // }
 
              
 
-                for(let i in predatorArr){
-                        predatorArr[i].eat()
-                }
+                // for(let i in predatorArr){
+                //         predatorArr[i].eat()
+                // }
 
 
-                for(let i in omnivorousArr){
-                        omnivorousArr[i].eat()
-                }
+                // for(let i in omnivorousArr){
+                //         omnivorousArr[i].eat()
+                // }
 
 
-                for(let i in hunterArr){
-                        hunterArr[i].eat()
-                }
+                // for(let i in hunterArr){
+                //         hunterArr[i].eat()
+                // }
 
-                for(let i in seniorHunterArr){
-                        seniorHunterArr[i].eat()
-                }
+                // for(let i in seniorHunterArr){
+                //         seniorHunterArr[i].eat()
+                // }
  
 
 
 }
+
+io.socket.emit("send matrix",nkarel)
+
+
+
 
 
