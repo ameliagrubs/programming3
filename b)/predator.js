@@ -1,4 +1,5 @@
-class Predator extends LivingCreature{
+let LivingCreature = require("./LivingCreature")
+module.exports = class Predator extends LivingCreature{
     constructor(x, y) {
         super(x,y)
         this.energy = 15
@@ -48,7 +49,7 @@ class Predator extends LivingCreature{
 
     mul() {
         let emptyCell = this.chooseCell(0)
-        let newCell = emptyCell(Math.floor(Math.random() * emptyCell.length))
+        let newCell = emptyCell[Math.floor(Math.random() * emptyCell.length)]
 
         if (newCell) {
             let newX = newCell[0]
@@ -67,7 +68,7 @@ class Predator extends LivingCreature{
 
     eat() {
         let emptyCell = this.chooseCell(1, 2)
-        let newCell = emptyCell(Math.floor(Math.random() * emptyCell.length))
+        let newCell = emptyCell[Math.floor(Math.random() * emptyCell.length)]
 
         if (newCell) {
             this.energy += 7
@@ -106,7 +107,7 @@ class Predator extends LivingCreature{
 
     move(){
         let emptyCell = this.chooseCell(0)
-        let newCell = emptyCell(Math.floor(Math.random() * emptyCell.length))
+        let newCell = emptyCell[Math.floor(Math.random() * emptyCell.length)]
 
             if(newCell){
                 let newX = newCell[0]

@@ -1,4 +1,5 @@
-class SeniorHunter extends LivingCreature{
+let LivingCreature = require("./LivingCreature")
+module.exports = class SeniorHunter extends LivingCreature{
     constructor(x, y) {
         super(x,y)
         this.energy = 5
@@ -60,8 +61,7 @@ class SeniorHunter extends LivingCreature{
 
     mul() {
         let emptyCell = this.chooseCell(0)
-        let newCell = emptyCell(Math.floor(Math.random() * emptyCell.length))
-
+        let newCell = emptyCell[Math.floor(Math.random() * emptyCell.length)]
         if (newCell) {
             let newX = newCell[0]
             let newY = newCell[1]
@@ -79,7 +79,7 @@ class SeniorHunter extends LivingCreature{
 
     eat() {
         let emptyCell = this.chooseCell(1, 2)
-        let newCell = emptyCell(Math.floor(Math.random() * emptyCell.length))
+        let newCell = emptyCell[Math.floor(Math.random() * emptyCell.length)]
 
         if (newCell) {
             this.energy += 7
@@ -120,7 +120,7 @@ class SeniorHunter extends LivingCreature{
 
     move(){
         let emptyCell = this.chooseCell(0)
-        let newCell = emptyCell(Math.floor(Math.random() * emptyCell.length))
+        let newCell = emptyCell[Math.floor(Math.random() * emptyCell.length)]
 
             if(newCell){
                 let newX = newCell[0]

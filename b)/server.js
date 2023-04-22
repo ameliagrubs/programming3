@@ -127,7 +127,7 @@ function createObject(){
                         let omn = new Omnivorous(x,y)
                         omnivorousArr.push(omn)
                 }else if (matrix[y][x] == 5) {
-                        var re = new restarter(x, y)
+                        var re = new Restarter(x, y)
                         restarterArr.push(re)
                 }else if (matrix[y][x] == 6) {
                         var hun = new Hunter(x, y)
@@ -139,7 +139,61 @@ function createObject(){
 
         }
 }
+   io.sockets.emit("send message",matrix)
 
 }
 
-io.sockets.emit("send message",matrix)
+function game(){
+        for (let i in grassArr) {
+                        grassArr[i].mul()
+                }
+
+
+                for(let i in grassEaterArr){
+                        grassEaterArr[i].eat()
+                }
+
+             
+
+                for(let i in predatorArr){
+                        predatorArr[i].eat()
+                }
+
+
+                for(let i in omnivorousArr){
+                        omnivorousArr[i].eat()
+                }
+
+
+                for(let i in hunterArr){
+                        hunterArr[i].eat()
+                }
+
+                for(let i in seniorHunterArr){
+                        seniorHunterArr[i].eat()
+                }
+ 
+                io.sockets.emit("send message",matrix)
+
+}              
+        
+setInterval(game,300)
+
+io.on("connection",function(){
+
+        createObject()
+})
+
+var static = {}
+
+setInterval( function(){
+        static.grass = grassArr.length
+        static.grassEater = grassEaterArr
+        static.predator = predatorArr
+        static.hunter = hunterArr
+        static.omnivorous = omnivorousArr
+        static.seniorHunter = seniorHunterArr
+        static.restarter = restarterArr
+
+        fs.writeFile("static.json", JSON.stringify(static), function(){})
+},1000)
