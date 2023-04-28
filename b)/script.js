@@ -1,75 +1,87 @@
-// function matrixGenerator(matrixSize, grass,grassEater,predator, omnivorous, restarter, hunter, seniorHunter) {
-//         var matrix = []
-//         ////  matrix սարքելու հատված
-//         for (let i = 0; i < matrixSize; i++) {
-//                 matrix.push([])
-//                 for (let j = 0; j < matrixSize; j++) {
-//                         matrix[i].push(0)
-//                 }
-//         }
-
-//         // 1 -եր այսինքն խոտեր քցելու հատված մատռիքսում
-//         for (let i = 0; i < grass; i++) {
-//                 let x = Math.floor(Math.random() * matrixSize)
-//                 let y = Math.floor(Math.random() * matrixSize)
-//                 matrix[y][x] = 1
-//         }
-//          //GrassEater 2
-//          //test
-//          for (let i = 0; i < grassEater; i++) {
-//                 let x = Math.floor(Math.random() * matrixSize)
-//                 let y = Math.floor(Math.random() * matrixSize)
-//                 matrix[y][x] = 2
-//         }
-//         //3 predator
-
-
-//         for (let i = 0; i < predator; i++) {
-//                 let x = Math.floor(Math.random() * matrixSize)
-//                 let y = Math.floor(Math.random() * matrixSize)
-//                 matrix[y][x] = 3
-//         }
-//         //4 omnivorous
-//         for (let i = 0; i < omnivorous; i++) {
-//                 let x = Math.floor(Math.random() * matrixSize)
-//                 let y = Math.floor(Math.random() * matrixSize)
-//                 matrix[y][x] = 4
-//         }
-//         //5 restarter
-//         for (let i = 0; i < restarter; i++) {
-
-//                 var x = Math.floor(Math.random() * matrixSize)
-//                 var y = Math.floor(Math.random() * matrixSize)
-        
-//                 matrix[y][x] = 5
-//         }
-//         //6 hunter
-//         for (let i = 0; i < hunter; i++) {
-
-//                 var x = Math.floor(Math.random() * matrixSize)
-//                 var y = Math.floor(Math.random() * matrixSize)
-        
-//                 matrix[y][x] = 6
-//         }
-//         //7 seniorHunter
-//         for (let i = 0; i < seniorHunter; i++) {
-
-//                 var x = Math.floor(Math.random() * matrixSize)
-//                 var y = Math.floor(Math.random() * matrixSize)
-        
-//                 matrix[y][x] = 7
-
-//         }
-
-//         return matrix
-// }
 var socket = io()
 let side = 30
+let weather1= "winter";
+let myChart;
 
+function changer(){
+        if(weather1 == "winter"){
+            document.getElementById("wstyle").style.color = "#8d05e8";
+        }
+        else{
+            document.getElementById("wstyle").style.color = "white";
+        }
+    }
 
 function setup() {
         createCanvas(30 * side, 30 * side)
        
+}
+
+document.getElementById("weather").innerHTML = weather1;
+    document.getElementById("wstyle").style.backgroundColor = weathSwitcher[weather1]
+    const data = {
+        labels: [
+          'Grass',
+          'GrassEater',
+        ],
+        datasets: [{
+          label: 'Chart of game',
+          data: [15,15,15,15,15],
+          backgroundColor: [
+            'rgb(0, 128, 0)',
+            'rgb(255, 255, 0)',
+          ],
+         hoverOffset: 2
+        }]
+      };
+    const config = {
+        type: 'doughnut',
+        data: data,
+        options: {
+            plugins: {
+                legend: {
+                    display: true,
+                    labels: {
+                        color: '#fff'
+                    }
+                }
+            }
+        }
+      };
+      myChart = new Chart(
+        document.getElementById('myChart'),
+        config
+      
+      );
+      
+      
+    changer();
+   
+
+
+
+    socket.on ('weather', function(data){
+        weather1 = data;
+        document.getElementById("weather").innerHTML = weather1;
+        document.getElementById("wstyle").style.backgroundColor = weathSwitcher[weather1]
+       
+          changer();
+    })
+    
+    socket.on ("send datas", function(counts){
+        document.getElementById("grass").innerHTML = counts.grass;
+        document.getElementById("grassEater").innerHTML = counts.grassEater;
+        
+        myChart.data.datasets[0].data = [counts.grass, counts.grassEater, counts.grassEaterEater, counts.coines, counts.bankAutos];
+        myChart.update();
+    })
+
+ 
+weathSwitcher = {
+    winter: "white",
+    spring: "#62D319",
+    summer: "green",
+    autumn: "#C75520"
 }
 
 
@@ -108,35 +120,7 @@ function nkarel(matrix) {
 
 
 
-                // for (let i in grassArr) {
-                //         grassArr[i].mul()
-                // }
-
-
-                // for(let i in grassEaterArr){
-                //         grassEaterArr[i].eat()
-                // }
-
-             
-
-                // for(let i in predatorArr){
-                //         predatorArr[i].eat()
-                // }
-
-
-                // for(let i in omnivorousArr){
-                //         omnivorousArr[i].eat()
-                // }
-
-
-                // for(let i in hunterArr){
-                //         hunterArr[i].eat()
-                // }
-
-                // for(let i in seniorHunterArr){
-                //         seniorHunterArr[i].eat()
-                // }
- 
+               
 
 
 }

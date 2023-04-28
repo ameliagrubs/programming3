@@ -96,7 +96,7 @@ hunterArr = []
 seniorHunterArr = []
 
 ///modules
-
+var n = 50;
 Grass = require("./grass")
 GrassEater = require("./grassEater")
 Hunter = require("./hunter")
@@ -104,6 +104,23 @@ Omnivorous = require("./omnivorous")
 Predator = require("./predator")
 Restarter = require("./restarter")
 SeniorHunter = require("./seniorHunter")
+
+let weathers = ["winter", "spring", "summer", "autumn"];
+
+
+function rand(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
+for (let i = 0; i < n; i++) {
+    matrix[i] = [];
+    for (let j = 0; j < n; j++) {
+        matrix[i][j] = Math.floor(rand(0, 6))
+
+    }
+}
+
+io.sockets.emit("send message", matrix);
 
 
 ///object creator
@@ -179,21 +196,141 @@ function game(){
         
 setInterval(game,300)
 
+let i = weathers.length - 1;
+
+function weat() {
+
+    let weather;
+    weather = weathers[i--];
+    if (i < 0) { i = 3 }
+    io.sockets.emit('"send message"', weather);
+}
+setInterval(weat, 8000);
+
 io.on("connection",function(){
 
         createObject()
 })
 
+//events
+
+function kill() {
+        grassArr = [];
+        grassEaterArr = [];
+        for (var y = 0; y < matrix.length; y++) {
+            for (var x = 0; x < matrix[y].length; x++) {
+                matrix[y][x] = 0;
+            }
+        }
+        io.sockets.emit("send message", matrix);
+    }
+
+    function spawnGr() {
+        for (var y = 0; y < matrix.length; y++) {
+            for (var x = 0; x < matrix[y].length; x++) {
+                if (matrix[y][x] == 0) {
+                    matrix[y][x] = 1
+                    grassArr.push(new Grass(x, y, 1))
+                }
+            }
+        }
+        io.sockets.emit("send message", matrix);
+    }
+    
+    function spawnGrEater() {
+        for (var i = 0; i < 15; i++) {
+            var x = Math.floor(Math.random() * matrix[0].length)
+            var y = Math.floor(Math.random() * matrix.length)
+            if (matrix[y][x] == 0 || matrix[y][x] == 1) {
+                matrix[y][x] = 2
+                grassEaterArr.push(new GrassEater(x, y, 2));
+            }
+        }
+        io.sockets.emit("send message", matrix);
+    }
+    
+    function spawnPred() {
+        for (var i = 0; i < 30; i++) {
+            var x = Math.floor(Math.random() * matrix[0].length)
+            var y = Math.floor(Math.random() * matrix.length)
+            if (matrix[y][x] == 5 || matrix[y][x] == 0) {
+                matrix[y][x] = 3
+                predatorArr.push(new GrassEaterEater(x, y, 3));
+            }
+        }
+        io.sockets.emit("send message", matrix);
+    }
+    function killPred() {
+        for (var i = 0; i < 60; i++) {
+            var x = Math.floor(Math.random() * matrix[0].length)
+            var y = Math.floor(Math.random() * matrix.length)
+            if (matrix[y][x] == 3) {
+                matrix[y][x] = 0
+                predatorArr[i].die();
+    
+            }
+        }
+        io.sockets.emit("send message", matrix);
+    }
+    
+    function changeWeather() {
+        weat();
+    }
+    
+    function alldatas() {
+        countd = {
+            grass: grassArr.length,
+            grassEater: grassEaterArr.length,
+            predator: predatorArr.length,
+
+        }
+        fs.writeFile("statistics.json", JSON.stringify(countd), function () {
+            io.sockets.emit("send message", countd)
+        })
+    
+    }
+    setInterval(alldatas, 300);
+    
+    setInterval(gameScripter, 300);
+    io.on('connection', function (socket) {
+        ObjectCreator(matrix);
+        socket.on('killAll', kill);
+        socket.on('spawnGr', spawnGr);
+        socket.on('spawnGrEater', spawnGrEater);
+        socket.on('spawnPr', spawnPred);
+        socket.on('killPr', killPred);
+        socket.on('chWeather', changeWeather);
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//static
 var static = {}
 
 setInterval( function(){
         static.grass = grassArr.length
-        static.grassEater = grassEaterArr
-        static.predator = predatorArr
-        static.hunter = hunterArr
-        static.omnivorous = omnivorousArr
-        static.seniorHunter = seniorHunterArr
-        static.restarter = restarterArr
+        static.grassEater = grassEaterArr.length
+        static.predator = predatorArr.length
+        static.hunter = hunterArr.length
+        static.omnivorous = omnivorousArr.length
+        static.seniorHunter = seniorHunterArr.length
+        static.restarter = restarterArr.length
 
         fs.writeFile("static.json", JSON.stringify(static), function(){})
 },1000)
