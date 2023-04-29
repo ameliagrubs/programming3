@@ -17,72 +17,92 @@ function setup() {
        
 }
 
-document.getElementById("weather").innerHTML = weather1;
-    document.getElementById("wstyle").style.backgroundColor = weathSwitcher[weather1]
-    const data = {
-        labels: [
-          'Grass',
-          'GrassEater',
-        ],
-        datasets: [{
-          label: 'Chart of game',
-          data: [15,15,15,15,15],
-          backgroundColor: [
-            'rgb(0, 128, 0)',
-            'rgb(255, 255, 0)',
-          ],
-         hoverOffset: 2
-        }]
-      };
-    const config = {
-        type: 'doughnut',
-        data: data,
-        options: {
-            plugins: {
-                legend: {
-                    display: true,
-                    labels: {
-                        color: '#fff'
-                    }
-                }
-            }
-        }
-      };
-      myChart = new Chart(
-        document.getElementById('myChart'),
-        config
+// function kill() {
+//         io.sockets.emit("send message", matrix);
+//     }
+// function spawnGr() {
+//         io.sockets.emit("send message", matrix);
+//     }
+// function spawnGrEater(){
+//         io.socket.emit("send message", matrix)
+//     }
+// function spawnPre(){
+//         io.socket.emit("send message", matrix)
+//     }
+// function spawnPre(){
+//         io.socket.emit("send message", matrix)
+//     }
+//     function killPred(){
+//         io.socket.emit("send message", matrix)
+//     }
+
+
+// document.getElementById("weather").innerHTML = weather1;
+//     document.getElementById("wstyle").style.backgroundColor = weathSwitcher[weather1]
+//     const data = {
+//         labels: [
+//           'Grass',
+//           'GrassEater',
+//         ],
+//         datasets: [{
+//           label: 'Chart of game',
+//           data: [15,15,15,15,15],
+//           backgroundColor: [
+//             'rgb(0, 128, 0)',
+//             'rgb(255, 255, 0)',
+//           ],
+//          hoverOffset: 2
+//         }]
+//       };
+//     const config = {
+//         type: 'doughnut',
+//         data: data,
+//         options: {
+//             plugins: {
+//                 legend: {
+//                     display: true,
+//                     labels: {
+//                         color: '#fff'
+//                     }
+//                 }
+//             }
+//         }
+//       };
+//       myChart = new Chart(
+//         document.getElementById('myChart'),
+//         config
       
-      );
+//       );
       
       
-    changer();
+//     changer();
    
 
 
 
-    socket.on ('weather', function(data){
-        weather1 = data;
-        document.getElementById("weather").innerHTML = weather1;
-        document.getElementById("wstyle").style.backgroundColor = weathSwitcher[weather1]
+//     socket.on ('weather', function(data){
+//         weather1 = data;
+//         document.getElementById("weather").innerHTML = weather1;
+//         document.getElementById("wstyle").style.backgroundColor = weathSwitcher[weather1]
        
-          changer();
-    })
+//           changer();
+//     })
     
-    socket.on ("send datas", function(counts){
-        document.getElementById("grass").innerHTML = counts.grass;
-        document.getElementById("grassEater").innerHTML = counts.grassEater;
+//     socket.on ("send datas", function(counts){
+//         document.getElementById("grass").innerHTML = counts.grass;
+//         document.getElementById("grassEater").innerHTML = counts.grassEater;
         
-        myChart.data.datasets[0].data = [counts.grass, counts.grassEater, counts.grassEaterEater, counts.coines, counts.bankAutos];
-        myChart.update();
-    })
+//         myChart.data.datasets[0].data = [counts.grass, counts.grassEater, counts.grassEaterEater, counts.coines, counts.bankAutos];
+//         myChart.update();
+//     })
 
  
-weathSwitcher = {
-    winter: "white",
-    spring: "#62D319",
-    summer: "green",
-    autumn: "#C75520"
-}
+// weathSwitcher = {
+//     winter: "white",
+//     spring: "#62D319",
+//     summer: "green",
+//     autumn: "#C75520"
+// }
 
 
 function nkarel(matrix) {

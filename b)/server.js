@@ -217,6 +217,10 @@ io.on("connection",function(){
 function kill() {
         grassArr = [];
         grassEaterArr = [];
+        seniorHunterArr = [];
+        predatorArr = [];
+        hunterArr = [];
+        omnivorousArr = [];
         for (var y = 0; y < matrix.length; y++) {
             for (var x = 0; x < matrix[y].length; x++) {
                 matrix[y][x] = 0;
@@ -249,7 +253,7 @@ function kill() {
         io.sockets.emit("send message", matrix);
     }
     
-    function spawnPred() {
+    function spawnPre() {
         for (var i = 0; i < 30; i++) {
             var x = Math.floor(Math.random() * matrix[0].length)
             var y = Math.floor(Math.random() * matrix.length)
@@ -291,32 +295,16 @@ function kill() {
     }
     setInterval(alldatas, 300);
     
-    setInterval(gameScripter, 300);
-    io.on('connection', function (socket) {
-        ObjectCreator(matrix);
-        socket.on('killAll', kill);
-        socket.on('spawnGr', spawnGr);
-        socket.on('spawnGrEater', spawnGrEater);
-        socket.on('spawnPr', spawnPred);
-        socket.on('killPr', killPred);
-        socket.on('chWeather', changeWeather);
-})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//     setInterval(gameScripter, 300);
+//     io.on('connection', function (socket) {
+//         ObjectCreator(matrix);
+//         socket.on('killAll', kill);
+//         socket.on('spawnGr', spawnGr);
+//         socket.on('spawnGrEater', spawnGrEater);
+//         socket.on('spawnPr', spawnPred);
+//         socket.on('killPr', killPred);
+//         socket.on('chWeather', changeWeather);
+// })
 
 
 
